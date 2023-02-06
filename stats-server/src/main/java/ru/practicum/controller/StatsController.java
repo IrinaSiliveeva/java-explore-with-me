@@ -2,14 +2,17 @@ package ru.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.dto.ViewStatsDto;
-import ru.practicum.model.EndpointHit;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.EndpointHitDto;
+import ru.practicum.dto.ViewStatsEndpointDto;
 import ru.practicum.service.StatsService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static ru.practicum.util.StatConstant.TIME_PATTERN;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,16 +21,16 @@ public class StatsController {
     private final StatsService statsService;
 
     @PostMapping("/hit")
-    public void createEndpointHit(@RequestBody EndpointHit endpointHit) {
-        log.info("С ip {} получен запрос к {} по адресу {}", endpointHit.getIp(), endpointHit.getApp(), endpointHit.getUri());
-        statsService.createEndpointHit(endpointHit);
+    public void createEndpointHit(@RequestBody @Validated EndpointHitDto endpointHitDto) {
+        log.info("С ip {} получен запрос к {} по адресу {}", endpointHitDto.getIp(), endpointHitDto.getApp(), endpointHitDto.getUri());
+        statsService.createEndpointHit(endpointHitDto);
     }
 
     @GetMapping("/stats")
-    public List<ViewStatsDto> getStats(@RequestParam List<String> uris,
-                                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                       @RequestParam(defaultValue = "false") Boolean unique) {
+    public List<ViewStatsEndpointDto> getStats(@RequestParam List<String> uris,
+                                               @RequestParam @DateTimeFormat(pattern = TIME_PATTERN) LocalDateTime start,
+                                               @RequestParam @DateTimeFormat(pattern = TIME_PATTERN) LocalDateTime end,
+                                               @RequestParam(defaultValue = "false") Boolean unique) {
         log.info("Получение статистики с {} по {} по адресам {} c уникальным ip {}", start, end, uris, unique);
         return statsService.getStats(uris, start, end, unique);
     }

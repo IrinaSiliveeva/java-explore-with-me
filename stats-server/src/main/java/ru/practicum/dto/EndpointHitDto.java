@@ -1,9 +1,9 @@
-package ru.practicum.model;
+package ru.practicum.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static ru.practicum.util.StatConstant.TIME_PATTERN;
@@ -13,19 +13,14 @@ import static ru.practicum.util.StatConstant.TIME_PATTERN;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Table(name = "stats")
-public class EndpointHit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "app", length = 500)
+public class EndpointHitDto {
+    @NotNull
     private String app;
-    @Column(name = "uri", length = 500)
+    @NotNull
     private String uri;
-    @Column(name = "ip", length = 500)
+    @NotNull
     private String ip;
-    @Column(name = "timestamp")
+    @NotNull
     @JsonFormat(pattern = TIME_PATTERN)
     private LocalDateTime timestamp;
 }
