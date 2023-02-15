@@ -29,7 +29,7 @@ public class PublicEventController {
     private final Client client;
 
     @GetMapping
-    public List<EventShortDto> getAllPublicEvents(@RequestParam(required = false) String text,
+    public List<EventShortDto> getAllPublicEvents(@RequestParam String text,
                                                   @RequestParam(required = false) List<Long> categories,
                                                   @RequestParam(required = false) Boolean paid,
                                                   @RequestParam(required = false) @DateTimeFormat(pattern = TIME_PATTERN) LocalDateTime rangeStart,

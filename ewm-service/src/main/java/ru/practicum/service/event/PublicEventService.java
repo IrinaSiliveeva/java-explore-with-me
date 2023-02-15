@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.EventFullDto;
 import ru.practicum.dto.EventShortDto;
+import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.event.EventMapper;
 import ru.practicum.model.Event;
@@ -23,6 +24,9 @@ public class PublicEventService {
 
     public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd,
                                                   Boolean onlyAvailable, String sort, int from, int size) {
+        if (text.isBlank()) {
+            throw new ConflictException("Текст запроса пуст");
+        }
         PageRequest pageRequest = PageRequest.of(from / size, size);
         if (sort != null) {
             Sort sorting = Sort.by(Sort.Direction.DESC, "id");

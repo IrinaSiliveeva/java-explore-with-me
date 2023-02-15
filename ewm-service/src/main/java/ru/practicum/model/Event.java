@@ -1,12 +1,10 @@
 package ru.practicum.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import ru.practicum.model.enums.State;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -37,19 +35,7 @@ public class Event {
     private Integer participantLimit;
     private LocalDateTime publishedOn;
     private Boolean requestModeration;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State state;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Event event = (Event) o;
-        return id != null && Objects.equals(id, event.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

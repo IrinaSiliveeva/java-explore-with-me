@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.CategoryDto;
 import ru.practicum.service.category.PublicCategoryService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,8 @@ public class PublicCategoryController {
     }
 
     @GetMapping
-    public List<CategoryDto> getAllCategories(@RequestParam(defaultValue = "0") Integer from,
-                                              @RequestParam(defaultValue = "10") Integer size) {
+    public List<CategoryDto> getAllCategories(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                              @Positive @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получение всех категорий с параметрами: from {}, size {}", from, size);
         return service.getAllCategories(PageRequest.of(from / size, size));
     }
