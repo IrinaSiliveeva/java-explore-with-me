@@ -5,6 +5,7 @@ import lombok.*;
 import ru.practicum.model.enums.State;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static ru.practicum.util.StatConstant.TIME_PATTERN;
 
@@ -34,4 +35,5 @@ public class EventFullDto {
     private State state;
     private String title;
     private Long views;
+    private Set<CommentEventDto> comments;
 }

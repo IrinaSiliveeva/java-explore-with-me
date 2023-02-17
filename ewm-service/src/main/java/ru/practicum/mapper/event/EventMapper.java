@@ -10,11 +10,13 @@ import ru.practicum.dto.Location;
 import ru.practicum.dto.NewEventDto;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.category.CategoryMapper;
+import ru.practicum.mapper.comment.CommentMapper;
 import ru.practicum.mapper.user.UserMapper;
 import ru.practicum.model.Event;
 import ru.practicum.model.enums.State;
 import ru.practicum.model.enums.Status;
 import ru.practicum.storage.category.CategoryRepository;
+import ru.practicum.storage.comment.CommentRepository;
 import ru.practicum.storage.request.RequestRepository;
 import ru.practicum.storage.user.UserRepository;
 
@@ -33,6 +35,7 @@ public class EventMapper {
     private final RequestRepository requestRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final CategoryMapper categoryMapper;
     private final UserMapper userMapper;
     private final Client client;
@@ -55,6 +58,7 @@ public class EventMapper {
                 .state(event.getState())
                 .title(event.getTitle())
                 .views(getViewsFromStatsServer(event.getId()))
+                .comments(commentRepository.findAllByEventId(event.getId()).stream().map(CommentMapper::mapFromComment).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -88,6 +92,7 @@ public class EventMapper {
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .views(getViewsFromStatsServer(event.getId()))
+                .comments(commentRepository.findAllByEventId(event.getId()).stream().map(CommentMapper::mapFromComment).collect(Collectors.toSet()))
                 .build();
     }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static ru.practicum.util.StatConstant.TIME_PATTERN;
 
@@ -26,4 +27,5 @@ public class EventShortDto {
     private Long views;
     @JsonIgnore
     private Integer participantLimit;
+    private Set<CommentEventDto> comments;
 }
