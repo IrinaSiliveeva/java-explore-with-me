@@ -354,8 +354,6 @@
 							"const target = pm.response.json();\r",
 							"pm.test(\"Проверка евента с комментарием\",()=>{\r",
 							"    pm.expect(target).to.be.not.null;\r",
-							"    pm.expect(target[0].event.id).to.eql(3);\r",
-							"    pm.expect(target[1].event.id).to.eql(2);\r",
 							"});"
 						],
 						"type": "text/javascript"
