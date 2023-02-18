@@ -1,0 +1,643 @@
+{
+	"info": {
+		"_postman_id": "70207d48-142f-4e47-a8a7-c3287168b719",
+		"name": "feature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21749208"
+	},
+	"item": [
+		{
+			"name": "Создание пустого комментария",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код 400 \",()=>{\r",
+							"pm.response.to.have.status(400);\r",
+							"pm.response.to.be.withBody;\r",
+							"pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание комментария для не опубликованного события",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код 409\",()=>{\r",
+							"pm.response.to.have.status(409);\r",
+							"pm.response.to.be.withBody;\r",
+							"pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"test comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание комментария",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 201\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка текста комментария\",()=>{\r",
+							"pm.expect(target.text).to.eqls(\"test comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"test comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменение комментария",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200\", ()=>{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка изменения комментраия\",()=>{\r",
+							"pm.expect(target.text).to.eqls(\"update comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"update comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/:commentId/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						":commentId",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "commentId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение коментариев пользователя для события",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200\",()=>{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка евента с комментарием\",()=>{\r",
+							"    pm.expect(target).to.be.not.null;\r",
+							"    pm.expect(target[0].event.id).to.eql(3);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание комментария другому событию",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 201\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка текста комментария\",()=>{\r",
+							"pm.expect(target.text).to.eqls(\"test comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"test comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение пользователем всех своих комментариев",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200\",()=>{\r",
+							"pm.response.to.have.status(200);\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка евента с комментарием\",()=>{\r",
+							"    pm.expect(target).to.be.not.null;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение событий с комментариями",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код ответа 200\",()=>{\r",
+							"pm.response.to.have.status(200)\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка евента с комментарием\",()=>{\r",
+							"    pm.expect(target).to.be.not.null;\r",
+							"    pm.expect(target[0].comments).to.be.not.null;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/comments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение комментария по id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код ответа 200\",()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Проверка текста комментария\",()=>{\r",
+							"pm.expect(target.text).to.eql(\"update comment\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение всех коментариев по id события",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код ответа 200\",()=>{\r",
+							"pm.response.to.have.status(200)\r",
+							"});\r",
+							"const target = pm.response.json();\r",
+							"pm.test(\"Получение списка комментариев события\",()=>{\r",
+							"pm.expect(target.comments).to.be.not.null\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/event/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						"event",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаления комментария",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 204\",()=>{\r",
+							"pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/:commentId/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						":commentId",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "commentId",
+							"value": "1"
+						},
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление коммента с не правильными данными",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 404\",()=>{\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/:userId/comments/:commentId/events/:eventId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"comments",
+						":commentId",
+						"events",
+						":eventId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "3"
+						},
+						{
+							"key": "commentId",
+							"value": "3"
+						},
+						{
+							"key": "eventId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление комментария администратором",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код ответа 204\",()=>{\r",
+							"    pm.response.to.have.status(204)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/:commentId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						":commentId"
+					],
+					"variable": [
+						{
+							"key": "commentId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}
